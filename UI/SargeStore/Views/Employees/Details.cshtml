@@ -1,0 +1,28 @@
+﻿@model SargeStoreDomain.ViewModels.EmployeeView
+@{
+    Layout = "_LayoutBase";
+}
+<h3>@ViewData["Title"]</h3>
+
+<table class="table">
+    <tr>
+        <th>@Html.LabelFor(m => m.LastName)</th>
+        <td>@Model.LastName</td>
+    </tr>
+
+    <tr>
+        <th>@Html.LabelFor(m => m.FirstName)</th>
+        <td>@Model.FirstName</td>
+    </tr>
+
+    <tr>
+        <th>@Html.LabelFor(m => m.Patronymic)</th>
+        <td>@Model.Patronymic</td>
+    </tr>
+
+    <tr>
+        <th>@Html.LabelFor(m => m.Age)</th>
+        <td>@Model.Age</td>
+    </tr>
+
+</table>
