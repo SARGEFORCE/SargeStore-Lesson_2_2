@@ -9,7 +9,7 @@ using SargeStoreDomain.ViewModels;
 
 namespace SargeStore.ServiceHosting.Controllers
 {
-    [Route("api/emloyees")]
+    [Route("api/employees")]
     [ApiController]
     public class EmployeesApiController : ControllerBase, IEmployeesData
     {
@@ -23,7 +23,7 @@ namespace SargeStore.ServiceHosting.Controllers
         public bool Delete(int id) => _EmployeesData.Delete(id);
 
         [HttpPut("{id}"), ActionName("Put")]
-        public void Edit(int id, EmployeeView Employee) => _EmployeesData.Edit(id, Employee);
+        public EmployeeView Edit(int id, EmployeeView Employee) => _EmployeesData.Edit(id, Employee);
 
         [HttpGet, ActionName("Get")] // api/Emloyees // api/Employees/Get
         public IEnumerable<EmployeeView> GetAll() => _EmployeesData.GetAll();

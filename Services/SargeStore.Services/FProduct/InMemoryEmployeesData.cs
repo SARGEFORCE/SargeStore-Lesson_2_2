@@ -35,15 +35,16 @@ namespace SargeStore.Services.FProduct
             Employee.Id = _Employees.Count == 0 ? 1 : _Employees.Max(e => e.Id) + 1;
             _Employees.Add(Employee);
         }
-        public void Edit(int id, EmployeeView Employee)
+        public EmployeeView Edit(int id, EmployeeView Employee)
         {
             var db_emloyee = GetById(id);
-            if (db_emloyee is null) return;
+            if (db_emloyee is null) return null;
 
             db_emloyee.FirstName = Employee.FirstName;
             db_emloyee.LastName = Employee.LastName;
             db_emloyee.Patronymic = Employee.Patronymic;
             db_emloyee.Age = Employee.Age;
+            return db_emloyee;
         }
         public bool Delete(int id)
         {
