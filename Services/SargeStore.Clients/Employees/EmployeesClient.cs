@@ -22,7 +22,7 @@ namespace SargeStore.Clients.Employees
             var response = Put($"{_ServiceAddress}/{id}", Employee);
             return response.Content.ReadAsAsync<EmployeeView>().Result;
         }
-
+ 
         public IEnumerable<EmployeeView> GetAll() => Get<List<EmployeeView>>(_ServiceAddress);
 
         public EmployeeView GetById(int id) => Get<EmployeeView>($"{_ServiceAddress}/{id}");

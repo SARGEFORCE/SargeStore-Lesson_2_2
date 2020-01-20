@@ -13,6 +13,7 @@ using SargeStoreDomain.Entities.Identity;
 using SargeStore.Clients.Values;
 using System;
 using SargeStore.Clients.Employees;
+using SargeStore.Clients.Products;
 
 namespace SargeStore
 {
@@ -29,7 +30,8 @@ namespace SargeStore
                 opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddTransient<SargeStoreContexInitializer>();
             services.AddSingleton<IEmployeesData, EmployeesClient>();
-            services.AddScoped<IProductData, SqlProductData>();
+            services.AddScoped<IProductData, ProductsClient>();
+            // services.AddScoped<IProductData, SqlProductData>();
             services.AddScoped<IOrderService, SqlOrderService>();
             services.AddScoped<ICartService, CookieCartService>();
 
