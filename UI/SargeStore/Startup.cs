@@ -14,6 +14,7 @@ using SargeStore.Clients.Values;
 using System;
 using SargeStore.Clients.Employees;
 using SargeStore.Clients.Products;
+using SargeStore.Clients.Orders;
 
 namespace SargeStore
 {
@@ -28,11 +29,12 @@ namespace SargeStore
 
             services.AddDbContext<SargeStoreDB>(opt =>
                 opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            services.AddTransient<SargeStoreContexInitializer>();
+            services.AddTransient<SargeStoreContextInitializer>();
             services.AddSingleton<IEmployeesData, EmployeesClient>();
             services.AddScoped<IProductData, ProductsClient>();
             // services.AddScoped<IProductData, SqlProductData>();
-            services.AddScoped<IOrderService, SqlOrderService>();
+            //services.AddScoped<IOrderService, SqlOrderService>();
+            services.AddScoped<IOrderService, OrdersClient>();
             services.AddScoped<ICartService, CookieCartService>();
 
             services.AddScoped<ICartService, CookieCartService>();
@@ -77,7 +79,7 @@ namespace SargeStore
         }
 
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, SargeStoreContexInitializer db)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, SargeStoreContextInitializer db)
         {
             db.InitializeAsync().Wait();
 

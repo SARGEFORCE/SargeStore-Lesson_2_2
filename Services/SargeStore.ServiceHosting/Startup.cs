@@ -6,6 +6,7 @@ using DataAccessLayer.Context;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -15,6 +16,7 @@ using Microsoft.Extensions.Options;
 using SargeStore.Interfaces.Services;
 using SargeStore.Services.Database;
 using SargeStore.Services.FProduct;
+using SargeStoreDomain.Entities.Identity;
 
 namespace SargeStore.ServiceHosting
 {
@@ -33,12 +35,15 @@ namespace SargeStore.ServiceHosting
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddDbContext<SargeStoreDB>(opt =>
                 opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            services.AddTransient<SargeStoreContexInitializer>();
+            services.AddTransient<SargeStoreContextInitializer>();
             services.AddSingleton<IEmployeesData, InMemoryEmployeesData>();
             services.AddScoped<IProductData, SqlProductData>();
             services.AddScoped<IOrderService, SqlOrderService>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<ICartService, CookieCartService>();
+            services.AddIdentity<User, Role>()
+                .AddEntityFrameworkStores<SargeStoreDB>()
+                .AddDefaultTokenProviders();
 
         }
 
