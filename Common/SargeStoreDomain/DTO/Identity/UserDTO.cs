@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using SargeStoreDomain.Entities.Identity;
 using System;
 
 namespace SargeStoreDomain.DTO.Identity
 {
     public abstract class UserDTO
     {
-        public UserDTO User { get; set; }
+        public User User { get; set; }
     }
 
     public class AddLoginDTO : UserDTO
