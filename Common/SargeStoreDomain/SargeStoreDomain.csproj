@@ -13,7 +13,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Services\SargeStore.ServiceHosting\SargeStore.ServiceHosting.csproj" />
+    <Folder Include="DTO\Orders\" />
+    <Folder Include="DTO\Products\" />
   </ItemGroup>
   
 </Project>

@@ -12,6 +12,9 @@ using SargeStore.Services.FProduct;
 using SargeStoreDomain.Entities.Identity;
 using SargeStore.Clients.Values;
 using System;
+using SargeStore.Clients.Employees;
+using SargeStore.Clients.Products;
+using SargeStore.Clients.Orders;
 
 namespace SargeStore
 {
@@ -23,16 +26,19 @@ namespace SargeStore
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<SargeStoreDB>(opt => 
-                opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            services.AddTransient<SargeStoreContexInitializer>();
-            services.AddSingleton<IEmployeesData, InMemoryEmployeesData>();
-            //services.AddScoped<IProductData, InMemoryProductData>();
-            services.AddScoped<IProductData, SqlProductData>();
-            services.AddScoped<ICartService, CookieCartService>();
-            services.AddScoped<IOrderService, SqlOrderService>();
-            services.AddTransient<IValuesService, ValuesClient>();
 
+            services.AddDbContext<SargeStoreDB>(opt =>
+                opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddTransient<SargeStoreContextInitializer>();
+            services.AddSingleton<IEmployeesData, EmployeesClient>();
+            services.AddScoped<IProductData, ProductsClient>();
+            // services.AddScoped<IProductData, SqlProductData>();
+            //services.AddScoped<IOrderService, SqlOrderService>();
+            services.AddScoped<IOrderService, OrdersClient>();
+            services.AddScoped<ICartService, CookieCartService>();
+
+            services.AddScoped<ICartService, CookieCartService>();
+            services.AddTransient<IValuesService, ValuesClient>();
             services.AddIdentity<User, Role>()
                 .AddEntityFrameworkStores<SargeStoreDB>()
                 .AddDefaultTokenProviders();
@@ -73,7 +79,7 @@ namespace SargeStore
         }
 
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, SargeStoreContexInitializer db)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, SargeStoreContextInitializer db)
         {
             db.InitializeAsync().Wait();
 

@@ -1,4 +1,5 @@
-﻿using SargeStoreDomain.Entities;
+﻿using SargeStoreDomain.DTO.Products;
+using SargeStoreDomain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,8 +11,8 @@ namespace SargeStore.Interfaces.Services
     {
         IEnumerable<Section> GetSections();
         IEnumerable<Brand> GetBrands();
-        IEnumerable<Product> GetProducts(ProductFilter Filter = null);
+        IEnumerable<ProductDTO> GetProducts(ProductFilter Filter = null);
 
-        Product GetProductById(int id);
+        ProductDTO GetProductById(int id);
     }
 }

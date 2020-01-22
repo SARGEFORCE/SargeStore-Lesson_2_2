@@ -31,7 +31,7 @@ namespace SargeStore.Interfaces.Services
         /// </summary>
         /// <param name="id">Идентификатор редактируемого сотрудника</param>
         /// <param name="Employee">Модель данных сотрудника</param>
-        void Edit(int id, EmployeeView Employee);
+        EmployeeView Edit(int id, EmployeeView Employee);
 
         /// <summary>
         /// Удаление сотрудника с указанным идентификатором

@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace SargeStore.Services.Database
 {
-    public class SargeStoreContexInitializer
+    public class SargeStoreContextInitializer
     {
         private readonly SargeStoreDB _db;
         private readonly UserManager<User> _UserManager;
         private readonly RoleManager<Role> _RoleManager;
 
-        public SargeStoreContexInitializer(SargeStoreDB db, UserManager<User> UserManager, RoleManager<Role> RoleManager)
+        public SargeStoreContextInitializer(SargeStoreDB db, UserManager<User> UserManager, RoleManager<Role> RoleManager)
         {
             _db = db;
             _UserManager = UserManager;
