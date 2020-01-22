@@ -1,7 +1,6 @@
 ﻿using DataAccessLayer.Context;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using SargeStoreDomain.ViewModels;
 using SargeStoreDomain.Entities;
 using SargeStoreDomain.Entities.Identity;
 using System;

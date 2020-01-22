@@ -1,20 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using DataAccessLayer.Context;
+using SargeStoreDomain.Entities.Identity;
 
 namespace SargeStore.ServiceHosting.Controllers
 {
     [Route("api/roles")]
+    //[Route("api/[controller]")]
     [Produces("application/json")]
     [ApiController]
     public class RolesApiController : ControllerBase
     {
-        private readonly RoleStore<Role> _RoleStore;
+        private readonly RoleStore<Role, SargeStoreDB> _RoleStore;
 
-        public RolesApiController(SargeStoreDB db) => _RoleStore = new RoleStore<Role>(db);
+        public RolesApiController(SargeStoreDB db) => _RoleStore = new RoleStore<Role, SargeStoreDB>(db);
 
         /* ---------------------------------------------------------------- */
 
@@ -41,13 +43,21 @@ namespace SargeStore.ServiceHosting.Controllers
         public async Task<string> GetRoleNameAsync(Role role) => await _RoleStore.GetRoleNameAsync(role);
 
         [HttpPost("SetRoleName/{name}")]
-        public async Task SetRoleNameAsync(Role role, string name) => await _RoleStore.SetRoleNameAsync(role, name);
+        public async Task SetRoleNameAsync(Role role, string name)
+        {
+            await _RoleStore.SetRoleNameAsync(role, name);
+            await _RoleStore.UpdateAsync(role);
+        }
 
         [HttpPost("GetNormalizedRoleName")]
         public async Task<string> GetNormalizedRoleNameAsync(Role role) => await _RoleStore.GetNormalizedRoleNameAsync(role);
 
         [HttpPost("SetNormalizedRoleName/{name}")]
-        public async Task SetNormalizedRoleNameAsync(Role role, string name) => await _RoleStore.SetNormalizedRoleNameAsync(role, name);
+        public async Task SetNormalizedRoleNameAsync(Role role, string name)
+        {
+            await _RoleStore.SetNormalizedRoleNameAsync(role, name);
+            await _RoleStore.UpdateAsync(role);
+        }
 
         [HttpGet("FindById/{id}")]
         public async Task<Role> FindByIdAsync(string id) => await _RoleStore.FindByIdAsync(id);

@@ -1,13 +1,10 @@
-﻿using DataAccessLayer.Context;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SargeStore.Interfaces.Api;
 using SargeStore.Interfaces.Services;
-using SargeStore.Services.Database;
 using SargeStore.Services.FProduct;
 using SargeStoreDomain.Entities.Identity;
 using SargeStore.Clients.Values;
@@ -15,6 +12,7 @@ using System;
 using SargeStore.Clients.Employees;
 using SargeStore.Clients.Products;
 using SargeStore.Clients.Orders;
+using SargeStore.Clients.Identity;
 
 namespace SargeStore
 {
@@ -26,38 +24,33 @@ namespace SargeStore
 
         public void ConfigureServices(IServiceCollection services)
         {
-
-            services.AddDbContext<SargeStoreDB>(opt =>
-                opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            services.AddTransient<SargeStoreContextInitializer>();
             services.AddSingleton<IEmployeesData, EmployeesClient>();
             services.AddScoped<IProductData, ProductsClient>();
-            // services.AddScoped<IProductData, SqlProductData>();
-            //services.AddScoped<IOrderService, SqlOrderService>();
             services.AddScoped<IOrderService, OrdersClient>();
             services.AddScoped<ICartService, CookieCartService>();
-
             services.AddScoped<ICartService, CookieCartService>();
             services.AddTransient<IValuesService, ValuesClient>();
+
+            #region Custom Implementation identity storage
+
+            services.AddTransient<IUserStore<User>, UsersClient>();
+            services.AddTransient<IUserRoleStore<User>, UsersClient>();
+            services.AddTransient<IUserClaimStore<User>, UsersClient>();
+            services.AddTransient<IUserPasswordStore<User>, UsersClient>();
+            services.AddTransient<IUserEmailStore<User>, UsersClient>();
+            services.AddTransient<IUserPhoneNumberStore<User>, UsersClient>();
+            services.AddTransient<IUserTwoFactorStore<User>, UsersClient>();
+            services.AddTransient<IUserLoginStore<User>, UsersClient>();
+            services.AddTransient<IUserLockoutStore<User>, UsersClient>();
+
+            services.AddTransient<IRoleStore<Role>, RolesClient>();
+
+            #endregion
+
             services.AddIdentity<User, Role>()
-                .AddEntityFrameworkStores<SargeStoreDB>()
+                //.AddEntityFrameworkStores<SargeStoreDB>()
                 .AddDefaultTokenProviders();
-            services.Configure<IdentityOptions>(opt =>
-            {
-                opt.Password.RequiredLength = 3;
-                opt.Password.RequireDigit = false;
-                opt.Password.RequireUppercase = false;
-                opt.Password.RequireLowercase = false;
-                opt.Password.RequireNonAlphanumeric = false;
-                opt.Password.RequiredUniqueChars = 3;
-
-                opt.Lockout.AllowedForNewUsers = true;
-                opt.Lockout.MaxFailedAccessAttempts = 10;
-                opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
-
-                //opt.User.AllowedUserNameCharacters = "abcdef...";
-                opt.User.RequireUniqueEmail = false; //Грабли - на этапе отладки при попытке рег двух юзеров без мыл                
-            });
+            
 
             services.ConfigureApplicationCookie(opt =>
             {
@@ -79,10 +72,8 @@ namespace SargeStore
         }
 
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, SargeStoreContextInitializer db)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            db.InitializeAsync().Wait();
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

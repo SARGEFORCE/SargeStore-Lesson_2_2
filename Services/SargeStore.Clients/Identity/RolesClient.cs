@@ -11,7 +11,7 @@ namespace SargeStore.Clients.Identity
 {
     public class RolesClient : BaseClient, IRolesClient
     {
-        public RolesClient(IConfiguration config, string ServiceAddress) : base(config, "api/roles") { }
+        public RolesClient(IConfiguration config) : base(config, "api/roles") { }
 
         #region IRoleStore<Role>
 

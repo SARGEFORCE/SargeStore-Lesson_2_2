@@ -1,22 +1,22 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration;
-using SargeStore.Clients.Base;
-using SargeStore.Interfaces.Services;
-using SargeStoreDomain.DTO.Identity;
-using SargeStoreDomain.Entities.Identity;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
+using SargeStore.Clients.Base;
+using SargeStoreDomain.DTO.Identity;
+using SargeStoreDomain.Entities.Identity;
+using SargeStore.Interfaces.Services;
 
 namespace SargeStore.Clients.Identity
 {
     public class UsersClient : BaseClient, IUsersClient
     {
-        public UsersClient(IConfiguration config, string ServiceAddress) : base(config, "api/users") { }
+        public UsersClient(IConfiguration config) : base(config, "api/users") { }
 
         #region Implementation of IUserStore<User>
 
@@ -83,7 +83,10 @@ namespace SargeStore.Clients.Identity
                 : IdentityResult.Failed();
         }
 
-        public async Task<User> FindByIdAsync(string id, CancellationToken cancel) => await GetAsync<User>($"{_ServiceAddress}/User/Find/{id}", cancel);
+        public async Task<User> FindByIdAsync(string id, CancellationToken cancel)
+        {
+            return await GetAsync<User>($"{_ServiceAddress}/User/Find/{id}", cancel);
+        }
 
         public async Task<User> FindByNameAsync(string name, CancellationToken cancel)
         {
@@ -94,7 +97,10 @@ namespace SargeStore.Clients.Identity
 
         #region Implementation of IUserRoleStore<User>
 
-        public async Task AddToRoleAsync(User user, string role, CancellationToken cancel) { await PostAsync($"{_ServiceAddress}/Role/{role}", user, cancel); }
+        public async Task AddToRoleAsync(User user, string role, CancellationToken cancel)
+        {
+            await PostAsync($"{_ServiceAddress}/Role/{role}", user, cancel);
+        }
 
         public async Task RemoveFromRoleAsync(User user, string role, CancellationToken cancel)
         {
@@ -126,6 +132,7 @@ namespace SargeStore.Clients.Identity
 
         public async Task SetPasswordHashAsync(User user, string hash, CancellationToken cancel)
         {
+            user.PasswordHash = hash;
             await PostAsync(
                 $"{_ServiceAddress}/SetPasswordHash", new PasswordHashDTO { Hash = hash, User = user },
                 cancel);
@@ -189,6 +196,7 @@ namespace SargeStore.Clients.Identity
 
         public async Task SetNormalizedEmailAsync(User user, string email, CancellationToken cancel)
         {
+            user.NormalizedEmail = email;
             await PostAsync($"{_ServiceAddress}/SetNormalizedEmail/{email}", user, cancel);
         }
 
@@ -295,6 +303,7 @@ namespace SargeStore.Clients.Identity
 
         public async Task SetLockoutEnabledAsync(User user, bool enabled, CancellationToken cancel)
         {
+            user.LockoutEnabled = enabled;
             await PostAsync($"{_ServiceAddress}/SetLockoutEnabled/{enabled}", user, cancel);
         }
 
