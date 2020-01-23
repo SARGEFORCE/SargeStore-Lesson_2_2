@@ -12,6 +12,7 @@ using SargeStore.Interfaces.Services;
 using SargeStore.Services.Database;
 using SargeStore.Services.FProduct;
 using SargeStoreDomain.Entities.Identity;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace SargeStore.ServiceHosting
 {
@@ -58,6 +59,12 @@ namespace SargeStore.ServiceHosting
                 opt.User.RequireUniqueEmail = false; //Грабли - на этапе отладки при попытке рег двух юзеров без мыл                
             });
 
+
+            services.AddSwaggerGen(opt =>
+            {
+                opt.SwaggerDoc("v1", new Info { Title = "SargeStore.API", Version = "v1"});
+                //opt.IncludeXmlComments("SargeStore.ServiceHosting.xml");
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -68,7 +75,12 @@ namespace SargeStore.ServiceHosting
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseSwagger();
+            app.UseSwaggerUI(opt => 
+            { 
+                opt.SwaggerEndpoint("/swagger/v1/swagger.json", "WebStore.API");
+                opt.RoutePrefix = string.Empty;
+            });
             app.UseMvc();
         }
     }
