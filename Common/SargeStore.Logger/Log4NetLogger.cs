@@ -1,7 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Xml;
 using log4net;
 using System.Reflection;
@@ -46,31 +44,26 @@ namespace SargeStore.Logger
 
             var log_message = Formatter(State, Error);
             
-            if (string.IsNullOrEmpty(log_message) && Error is null) return;\
+            if (string.IsNullOrEmpty(log_message) && Error is null) return;
 
             switch (Level)
             {
                 default: throw new ArgumentOutOfRangeException(nameof(Level), Level, null);
 
                 case LogLevel.Trace:
-                case LogLevel.Debug:
-                    _Log.Debug(log_message);
+                case LogLevel.Debug : _Log.Debug(log_message);
                     break;
 
-                case LogLevel.Information:
-                    _Log.Info(log_message);
+                case LogLevel.Information : _Log.Info(log_message);
                     break;
 
-                case LogLevel.Warning:
-                    _Log.Warn(log_message);
+                case LogLevel.Warning : _Log.Warn(log_message);
                     break;
 
-                case LogLevel.Error:
-                    _Log.Error(log_message ?? Error.ToString());
+                case LogLevel.Error : _Log.Error(log_message ?? Error.ToString());
                     break;
 
-                case LogLevel.Critical:
-                    _Log.Fatal(log_message ?? Error.ToString());
+                case LogLevel.Critical: _Log.Fatal(log_message ?? Error.ToString());
                     break;
 
                 case LogLevel.None:
