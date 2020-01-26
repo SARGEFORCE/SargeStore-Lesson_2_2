@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
-using log4net.Repository.Hierarchy;
+using Microsoft.Extensions.Logging;
 
 namespace SargeStore.Logger
 {
@@ -15,6 +15,7 @@ namespace SargeStore.Logger
                 var dir = Path.GetDirectoryName(assembly.Location) ?? throw new InvalidOperationException("Не удалось определить каталог исполнительного файла");
                 ConfigurationFile = Path.Combine(dir, ConfigurationFile);
             }
+
             Factory.AddProvider(new Log4NetProvider(ConfigurationFile));
 
             return Factory;
