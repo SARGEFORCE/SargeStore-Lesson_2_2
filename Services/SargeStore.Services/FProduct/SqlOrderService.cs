@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using SargeStore.Interfaces.Services;
 using SargeStoreDomain.DTO.Orders;
+using Microsoft.Extensions.Logging;
 
 namespace SargeStore.Services.FProduct
 {
@@ -15,11 +16,13 @@ namespace SargeStore.Services.FProduct
     {
         private readonly SargeStoreDB _db;
         private readonly UserManager<User> _UserManager;
+        private readonly ILogger<SqlOrderService> _Logger;
 
-        public SqlOrderService(SargeStoreDB db, UserManager<User> UserManager)
+        public SqlOrderService(SargeStoreDB db, UserManager<User> UserManager, ILogger<SqlOrderService> Logger)
         {
             _db = db;
             _UserManager = UserManager;
+            _Logger = Logger;
         }
         public OrderDTO CreateOrder(CreateOrderModel OrderModel, string UserName)
         {

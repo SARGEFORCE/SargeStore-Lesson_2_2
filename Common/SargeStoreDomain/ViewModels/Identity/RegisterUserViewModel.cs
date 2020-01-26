@@ -7,7 +7,7 @@ namespace SargeStoreDomain.ViewModels.Identity
     {
         [Required]
         [MaxLength(256)]
-       // [Remote("IsNameFree", "Account", ErrorMessage = "Пользователь с таким именем уже существует")]
+        // [Remote("IsNameFree", "Account", ErrorMessage = "Пользователь с таким именем уже существует")]
         [Display(Name = "Имя пользователя")]
         public string UserName { get; set; }
 
