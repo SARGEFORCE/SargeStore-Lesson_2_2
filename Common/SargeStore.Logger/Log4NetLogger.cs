@@ -32,11 +32,8 @@ namespace SargeStore.Logger
                 case LogLevel.None : return false;
             }
         }
-        public IDisposable BeginScope<TState>(TState state)
-        {
-            throw new NotImplementedException();
-        }
-        
+        public IDisposable BeginScope<TState>(TState state) => null;
+
         public void Log<TState>(LogLevel Level, EventId EventId, TState State, Exception Error, Func<TState, Exception, string> Formatter)
         {
             if (Formatter is null) throw new ArgumentException(nameof(Formatter));

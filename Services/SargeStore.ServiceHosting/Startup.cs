@@ -8,8 +8,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using SargeStore.Interfaces.Services;
 using SargeStore.Services.Database;
+using SargeStore.Logger;
 using SargeStore.Services.FProduct;
 using SargeStoreDomain.Entities.Identity;
 using Swashbuckle.AspNetCore.Swagger;
@@ -68,8 +70,10 @@ namespace SargeStore.ServiceHosting
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, SargeStoreContextInitializer db)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, SargeStoreContextInitializer db, ILoggerFactory log)
         {
+            log.AddLog4Net();
+
             db.InitializeAsync().Wait();
             if (env.IsDevelopment())
             {
