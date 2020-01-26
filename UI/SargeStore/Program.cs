@@ -38,9 +38,10 @@ namespace SargeStore
                 .MinimumLevel.Override("Microsoft", LogEventLevel.Error)
                 .Enrich.FromLogContext()
                 .WriteTo.Console(
-                    outputTemplate:"[{Timestamp:HH:mm:ss.fff}{Level:u3}]{SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}")
+                    outputTemplate: "[{Timestamp:HH:mm:ss.fff}{Level:u3}]{SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}")
                 .WriteTo.RollingFile($".\\Logs\\SargeStore[{DateTime.Now:yyyy-MM-ddTHH-mm-ss}].log")
-                .WriteTo.File(new JsonFormatter(",", true), $".\\Logs\\SargeStore[{DateTime.Now:yyyy-MM-ddTHH-mm-ss}].log.json");
+                .WriteTo.File(new JsonFormatter(",", true), $".\\Logs\\SargeStore[{DateTime.Now:yyyy-MM-ddTHH-mm-ss}].log.json")
+                .WriteTo.Seq("http://localhost:53415");
             });
                 
     }
