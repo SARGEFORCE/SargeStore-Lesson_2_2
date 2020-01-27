@@ -13,6 +13,8 @@ using SargeStore.Clients.Employees;
 using SargeStore.Clients.Products;
 using SargeStore.Clients.Orders;
 using SargeStore.Clients.Identity;
+using SargeStore.Logger;
+using Microsoft.Extensions.Logging;
 
 namespace SargeStore
 {
@@ -72,8 +74,10 @@ namespace SargeStore
         }
 
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory log)
         {
+            log.AddLog4Net();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

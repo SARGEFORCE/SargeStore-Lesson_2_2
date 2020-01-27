@@ -19,9 +19,16 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SargeStore.ServiceHosting",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SargeStore.Interfaces", "Services\SargeStore.Interfaces\SargeStore.Interfaces.csproj", "{3A451511-531C-4823-901D-3E828F98F77B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SargeStore.Services", "Services\SargeStore.Services\SargeStore.Services.csproj", "{CC03841B-4B44-476E-A2EA-45D680DBC31A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SargeStore.Services", "Services\SargeStore.Services\SargeStore.Services.csproj", "{CC03841B-4B44-476E-A2EA-45D680DBC31A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SargeStore.Clients", "Services\SargeStore.Clients\SargeStore.Clients.csproj", "{1911F0A5-45EE-423B-8823-325C1B3DA71E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SargeStore.Clients", "Services\SargeStore.Clients\SargeStore.Clients.csproj", "{1911F0A5-45EE-423B-8823-325C1B3DA71E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SargeStore.Logger", "Common\SargeStore.Logger\SargeStore.Logger.csproj", "{7E4B98D7-022A-4B51-A3E4-685502BE05EA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C32F070B-94E0-499D-93A4-DF989B27D0FD}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +64,10 @@ Global
 		{1911F0A5-45EE-423B-8823-325C1B3DA71E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1911F0A5-45EE-423B-8823-325C1B3DA71E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1911F0A5-45EE-423B-8823-325C1B3DA71E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E4B98D7-022A-4B51-A3E4-685502BE05EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E4B98D7-022A-4B51-A3E4-685502BE05EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E4B98D7-022A-4B51-A3E4-685502BE05EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E4B98D7-022A-4B51-A3E4-685502BE05EA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -69,6 +80,7 @@ Global
 		{3A451511-531C-4823-901D-3E828F98F77B} = {CB27BF10-025B-455D-92B8-4D9A0F1F1C9B}
 		{CC03841B-4B44-476E-A2EA-45D680DBC31A} = {CB27BF10-025B-455D-92B8-4D9A0F1F1C9B}
 		{1911F0A5-45EE-423B-8823-325C1B3DA71E} = {CB27BF10-025B-455D-92B8-4D9A0F1F1C9B}
+		{7E4B98D7-022A-4B51-A3E4-685502BE05EA} = {7A4925DD-B561-4D52-8AC5-2AE911340281}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B8C93FB1-6DA8-487E-9AB9-21442C2F25F2}

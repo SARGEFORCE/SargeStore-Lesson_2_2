@@ -1,6 +1,7 @@
 ﻿using DataAccessLayer.Context;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using SargeStoreDomain.Entities.Identity;
 using System;
 using System.Linq;
@@ -13,12 +14,18 @@ namespace SargeStore.Services.Database
         private readonly SargeStoreDB _db;
         private readonly UserManager<User> _UserManager;
         private readonly RoleManager<Role> _RoleManager;
+        private readonly ILogger<SargeStoreContextInitializer> _Logger;
 
-        public SargeStoreContextInitializer(SargeStoreDB db, UserManager<User> UserManager, RoleManager<Role> RoleManager)
+        public SargeStoreContextInitializer(
+            SargeStoreDB db, 
+            UserManager<User> UserManager, 
+            RoleManager<Role> RoleManager,
+            ILogger<SargeStoreContextInitializer> Logger)
         {
             _db = db;
             _UserManager = UserManager;
             _RoleManager = RoleManager;
+            _Logger = Logger;
         }
 
         public async Task InitializeAsync()
@@ -86,8 +93,11 @@ namespace SargeStore.Services.Database
                 if (creation_result.Succeeded)
                     await _UserManager.AddToRoleAsync(admin, Role.Administrator);
                 else
-                    throw new InvalidOperationException($"Ошибка при создании админа в БД " +
-                        $"{string.Join(", ", creation_result.Errors.Select(e => e.Description))}");
+                {
+                    var errors = string.Join(", ", creation_result.Errors.Select(e => e.Description));
+                    _Logger.LogError("Ошибка при создании пользователя Админимтратор в БД {0}", errors);
+                    throw new InvalidOperationException($"Ошибка при создании админа в БД {errors}");
+                }
             }
         }
     }
