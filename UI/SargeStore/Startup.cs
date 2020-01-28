@@ -15,6 +15,7 @@ using SargeStore.Clients.Orders;
 using SargeStore.Clients.Identity;
 using SargeStore.Logger;
 using Microsoft.Extensions.Logging;
+using SargeStore.Infrastructure.Middleware;
 
 namespace SargeStore
 {
@@ -63,7 +64,7 @@ namespace SargeStore
 
                 opt.LoginPath = "/Account/Login";
                 opt.LogoutPath = "/Account/Logout";
-                opt.AccessDeniedPath = "/Account/AccessDenided";
+                opt.AccessDeniedPath = "/Account/AccessDenied";
 
                 opt.SlidingExpiration = true;
             });
@@ -94,6 +95,10 @@ namespace SargeStore
             app.UseCookiePolicy();
 
             app.UseAuthentication();
+
+            app.UseSession();
+
+            app.UseMiddleware<ErrorHandlingMiddleware>();//промежуточное ПО для отлавливания и логгирования ошибок
 
             app.UseMvc(routes => 
             {

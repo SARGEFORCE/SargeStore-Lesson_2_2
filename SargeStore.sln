@@ -23,9 +23,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SargeStore.Services", "Serv
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SargeStore.Clients", "Services\SargeStore.Clients\SargeStore.Clients.csproj", "{1911F0A5-45EE-423B-8823-325C1B3DA71E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SargeStore.Logger", "Common\SargeStore.Logger\SargeStore.Logger.csproj", "{7E4B98D7-022A-4B51-A3E4-685502BE05EA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SargeStore.Logger", "Common\SargeStore.Logger\SargeStore.Logger.csproj", "{7E4B98D7-022A-4B51-A3E4-685502BE05EA}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C32F070B-94E0-499D-93A4-DF989B27D0FD}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".service", ".service", "{C32F070B-94E0-499D-93A4-DF989B27D0FD}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
 	EndProjectSection

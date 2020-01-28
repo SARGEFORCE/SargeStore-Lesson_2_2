@@ -24,5 +24,7 @@ namespace SargeStore.Controllers
         public IActionResult ProductDetails() => View();
         public IActionResult Shop() => View();
         public IActionResult Error404() => View();
+
+        public IActionResult ThrowException() => throw new ApplicationException("Тестовая ошибка");
     }
 }

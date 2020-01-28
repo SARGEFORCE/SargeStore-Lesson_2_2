@@ -94,6 +94,6 @@ namespace SargeStore.Controllers
             await _SignInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }
-        public IActionResult AccessDenided() => View();
+        public IActionResult AccessDenied() => View();
     }
 }
