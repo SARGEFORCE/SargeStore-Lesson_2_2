@@ -9,6 +9,7 @@ using System.Linq;
 using SargeStore.Interfaces.Services;
 using SargeStoreDomain.DTO.Orders;
 using Microsoft.Extensions.Logging;
+using SargeStore.Services.Map;
 
 namespace SargeStore.Services.FProduct
 {
@@ -58,56 +59,22 @@ namespace SargeStore.Services.FProduct
                 }
                 _db.SaveChanges();
                 transaction.Commit();
-                return new OrderDTO
-                {
-                    Phone = order.Phone,
-                    Address = order.Address,
-                    Date = order.Date,
-                    OrderItems = order.OrderItems.Select(item => new OrderItemDTO
-                    {
-                        Id = item.Id,
-                        Price = item.Price,
-                        Quantity = item.Quantity
-                    })
-                };
+                return order.ToDTO();
             };
         }
         
 
-        public OrderDTO GetOrderById(int id)
-        {var o = _db.Orders
+        public OrderDTO GetOrderById(int id)=>_db.Orders
             .Include(order => order.OrderItems)
-            .FirstOrDefault(order => order.Id == id);
-            return o is null? null : new OrderDTO
-            {
-                Phone = o.Phone,
-                Address = o.Address,
-                Date = o.Date,
-                OrderItems = o.OrderItems.Select(item => new OrderItemDTO
-                {
-                    Id = item.Id,
-                    Price = item.Price,
-                    Quantity = item.Quantity
-                })
-            };
-        }
+            .FirstOrDefault(order => order.Id == id)
+            .ToDTO();
+        
 
         public IEnumerable<OrderDTO> GetUserOrders(string UserName) => _db.Orders
             .Include(order => order.User)
             .Include(order => order.OrderItems)
             .Where(order => order.User.UserName == UserName)
             .ToArray()
-            .Select( o=> new OrderDTO
-            { 
-                Phone = o.Phone,
-                Address = o.Address,
-                Date = o.Date,
-                OrderItems = o.OrderItems.Select(item => new OrderItemDTO
-                {
-                    Id = item.Id,
-                    Price = item.Price,
-                    Quantity = item.Quantity
-                })
-            });
+            .Select(OrderMapper.ToDTO);
     }
 }

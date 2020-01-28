@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using SargeStoreDomain.ViewModels;
 
 namespace SargeStore.Controllers
 {
@@ -25,6 +21,6 @@ namespace SargeStore.Controllers
         public IActionResult Shop() => View();
         public IActionResult Error404() => View();
 
-        public IActionResult ThrowException() => throw new ApplicationException("Тестовая ошибка");
+        //public IActionResult ThrowException() => throw new ApplicationException("Тестовая ошибка");
     }
 }
