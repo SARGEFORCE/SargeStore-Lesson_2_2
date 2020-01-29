@@ -30,8 +30,8 @@ namespace SargeStore
             services.AddSingleton<IEmployeesData, EmployeesClient>();
             services.AddScoped<IProductData, ProductsClient>();
             services.AddScoped<IOrderService, OrdersClient>();
-            services.AddScoped<ICartService, CookieCartService>();
-            services.AddScoped<ICartService, CookieCartService>();
+            services.AddScoped<ICartService, CartService>();
+            services.AddScoped<ICartStore, CookieCartStore>();
             services.AddTransient<IValuesService, ValuesClient>();
 
             #region Custom Implementation identity storage
