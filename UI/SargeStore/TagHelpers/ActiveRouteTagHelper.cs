@@ -35,7 +35,7 @@ namespace SargeStore.TagHelpers
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
-            var ignore_action = context.AllAttributes.ContainsName(IgnoreActionName); //.TryGetAttribute(IgnoreActionName, out _);
+            var ignore_action = context.AllAttributes.ContainsName(IgnoreActionName);
 
             if (IsActive(ignore_action))
                 MakeActive(output);
