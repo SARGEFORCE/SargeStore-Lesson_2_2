@@ -38,7 +38,7 @@ namespace SargeStore.ServiceHosting
             services.AddScoped<IProductData, SqlProductData>();
             services.AddScoped<IOrderService, SqlOrderService>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddScoped<ICartService, CookieCartService>();
+            services.AddScoped<ICartService, CartService>();
 
             services.AddIdentity<User, Role>()
                 .AddEntityFrameworkStores<SargeStoreDB>()
