@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using SargeStoreDomain.Entities;
 using SargeStoreDomain.ViewModels;
 using SargeStore.Interfaces.Services;
+using log4net.Core;
+using Microsoft.Extensions.Logging;
 
 namespace SargeStore.Controllers
 {
@@ -29,17 +31,23 @@ namespace SargeStore.Controllers
                     Name = p.Name,
                     Order = p.Order,
                     Price = p.Price,
-                    ImageUrl = p.ImageUrl
+                    ImageUrl = p.ImageUrl,
+                    Brand =p.Brand.Name
                 }).OrderBy(p => p.Order)
             });
         }
 
-        public IActionResult Details(int id)
+        public IActionResult Details(int id, [FromServices] ILogger<CatalogController> Logger)
         {
             var product = _ProductData.GetProductById(id);
 
             if (product is null)
+            {
+                Logger.LogWarning("Запрошенный товар {0} не найден в каталоге", id);
                 return NotFound();
+            }
+
+            Logger.LogInformation("Товар {0} найден: {1}", id, product.Name);
 
             return View(new ProductViewModel
             {
