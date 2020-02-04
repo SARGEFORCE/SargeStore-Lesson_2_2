@@ -9,19 +9,23 @@ using System.Linq;
 
 namespace SargeStore.Services.FProduct
 {
-    public class SqlProductData : IProductData //Unit of work
+    public class SqlProductData : IProductData
     {
-        public SargeStoreDB _db;
+        private readonly SargeStoreDB _db;
 
         public SqlProductData(SargeStoreDB db) => _db = db;
 
         public IEnumerable<Section> GetSections() => _db.Sections
-            //.Include(section => section.Products)
-            .AsEnumerable();
+           //.Include(section => section.Products)
+           .AsEnumerable();
+
+        public Section GetSectionById(int id) => _db.Sections.FirstOrDefault(s => s.Id == id);
 
         public IEnumerable<Brand> GetBrands() => _db.Brands
-            //.Include(brand => brand.Products)
-            .AsEnumerable();
+           //.Include(brand => brand.Products)
+           .AsEnumerable();
+
+        public Brand GetBrandById(int id) => _db.Brands.FirstOrDefault(b => b.Id == id);
 
         public IEnumerable<ProductDTO> GetProducts(ProductFilter Filter = null)
         {
@@ -33,15 +37,18 @@ namespace SargeStore.Services.FProduct
             if (Filter?.SectionId != null)
                 query = query.Where(product => product.SectionId == Filter.SectionId);
 
-            return query.AsEnumerable().Select(ProductMapper.ToDTO);                
+            return query
+               .Include(p => p.Brand)
+               .Include(p => p.Section)
+               .AsEnumerable()
+               .Select(ProductMapper.ToDTO);
         }
 
         public ProductDTO GetProductById(int id) =>
             _db.Products
-            .Include(p => p.Brand)
-            .Include(p => p.Section)
-            .FirstOrDefault(p => p.Id == id)
-            .ToDTO();
-        
+               .Include(p => p.Brand)
+               .Include(p => p.Section)
+               .FirstOrDefault(p => p.Id == id)
+               .ToDTO();
     }
 }
