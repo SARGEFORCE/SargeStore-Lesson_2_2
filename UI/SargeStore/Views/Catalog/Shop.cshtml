@@ -12,7 +12,16 @@
             <div class="col-sm-3">
                 <partial name="Partial/_LeftSideBar" />
             </div>
-            <partial name="Partial/_FeaturesItem" model="@Model.Products" />
+
+            <div class="col-sm-9 padding-right">
+                <partial name="Partial/_FeaturesItem" model="@Model.Products" />
+                <paging page-model="@Model.PageViewModel"
+                        page-action="Shop"
+                        page-url-SectionId="@Model.SectionId"
+                        page-url-BrandsId="@Model.BrandId">
+
+                </paging>
+            </div>
         </div>
     </div>
 </section>

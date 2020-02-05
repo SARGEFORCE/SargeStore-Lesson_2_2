@@ -9,6 +9,7 @@ using SargeStoreDomain.Entities;
 using SargeStoreDomain.ViewModels;
 using SargeStore.Interfaces.Services;
 using Assert = Xunit.Assert;
+using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 
 namespace SargeStore.Tests.Controllers
 {
@@ -44,7 +45,9 @@ namespace SargeStore.Tests.Controllers
                    }
                });
 
-            var controller = new CatalogController(product_data_mock.Object);
+            var config_mock = new Mock<IConfiguration>();
+
+            var controller = new CatalogController(product_data_mock.Object, config_mock.Object);
 
             var logger_mock = new Mock<ILogger<CatalogController>>();
 
@@ -80,7 +83,9 @@ namespace SargeStore.Tests.Controllers
                .Setup(p => p.GetProductById(It.IsAny<int>()))
                .Returns(default(ProductDTO));
 
-            var controller = new CatalogController(product_data_mock.Object);
+            var config_mock = new Mock<IConfiguration>();
+
+            var controller = new CatalogController(product_data_mock.Object, config_mock.Object);
 
             var result = controller.Details(1, logger_mock.Object);
 
@@ -90,40 +95,48 @@ namespace SargeStore.Tests.Controllers
         [TestMethod]
         public void Shop_Returns_Correct_View()
         {
+            var products = new[]
+            {
+                new ProductDTO
+                {
+                    Id = 1,
+                    Name = "Product 1",
+                    Order = 0,
+                    Price = 10m,
+                    ImageUrl = "Product1.png",
+                    Brand = new BrandDTO
+                    {
+                        Id = 1,
+                        Name = "Brand of product 1"
+                    }
+                },
+                new ProductDTO
+                {
+                    Id = 2,
+                    Name = "Product 2",
+                    Order = 1,
+                    Price = 20m,
+                    ImageUrl = "Product2.png",
+                    Brand = new BrandDTO
+                    {
+                        Id = 1,
+                        Name = "Brand of product 2"
+                    }
+                }
+            };
+
             var product_data_mock = new Mock<IProductData>();
             product_data_mock
                .Setup(p => p.GetProducts(It.IsAny<ProductFilter>()))
-               .Returns<ProductFilter>(filter => new[]
-                {
-                    new ProductDTO
-                    {
-                        Id = 1,
-                        Name = "Product 1",
-                        Order = 0,
-                        Price = 10m,
-                        ImageUrl = "Product1.png",
-                        Brand = new BrandDTO
-                        {
-                            Id = 1,
-                            Name = "Brand of product 1"
-                        }
-                    },
-                    new ProductDTO
-                    {
-                        Id = 2,
-                        Name = "Product 2",
-                        Order = 1,
-                        Price = 20m,
-                        ImageUrl = "Product2.png",
-                        Brand = new BrandDTO
-                        {
-                            Id = 1,
-                            Name = "Brand of product 2"
-                        }
-                    }
-                });
+               .Returns<ProductFilter>(filter => new PagedProductDTO
+               {
+                   Products = products,
+                   TotalCount = products.Length
+               });
 
-            var controller = new CatalogController(product_data_mock.Object);
+            var config_mock = new Mock<IConfiguration>();
+
+            var controller = new CatalogController(product_data_mock.Object, config_mock.Object);
 
             const int expected_section_id = 1;
             const int expected_brand_id = 5;
