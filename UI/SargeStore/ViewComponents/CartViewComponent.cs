@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SargeStore.Interfaces.Services;
 
-namespace SargeStore.Components
+namespace SargeStore.ViewComponents
 {
     public class CartViewComponent : ViewComponent
     {

@@ -6,7 +6,7 @@ using SargeStoreDomain.ViewModels.BreadCrumbs;
 using SargeStore.Interfaces.Services;
 using SargeStore.Controllers;
 
-namespace SargeStore.Components
+namespace SargeStore.ViewComponents
 {
     public class BreadCrumbsViewComponent : ViewComponent
     {

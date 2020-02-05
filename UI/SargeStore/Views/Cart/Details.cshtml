@@ -5,12 +5,6 @@
 
 <section id="cart_items">
     <div class="container">
-        <div class="breadcrumbs">
-            <ol class="breadcrumb">
-                <li><a href="#">Home</a></li>
-                <li class="active">Shopping Cart</li>
-            </ol>
-        </div>
         <div class="table-responsive cart_info">
             <table class="table table-condensed">
                 <thead>
@@ -23,37 +17,39 @@
                         <td></td>
                     </tr>
                 </thead>
-                @{ 
-                    decimal SumCart = 0;
-                }
                 <tbody>
+                    @{
+                        decimal SumCart = 0;
+                    }
                     @foreach (var (product, quantity) in Model.CartViewModel.Items)
                     {
                         SumCart += quantity * product.Price;
+
                         <tr>
                             <td class="cart_product">
                                 <a asp-controller="Catalog" asp-action="Details" asp-route-id="@product.Id">
-                                <img src="~/images/cart/@product.ImageUrl" alt="@product.Name"></a>
+                                    <img src="~/images/cart/@product.ImageUrl" alt="@product.Name">
+                                </a>
                             </td>
                             <td class="cart_description">
                                 <h4><a asp-controller="Catalog" asp-action="Details" asp-route-id="@product.Id">@product.Name</a></h4>
-                                <p>Web ID: @product.Id.ToString("000000")</p>
+                                <p>Web ID: @product.Id.ToString("00000")</p>
                             </td>
-                            <td class="cart_price">
+                            <td class="cart_price" data-price="@product.Price">
                                 <p>@product.Price.ToString("C")</p>
                             </td>
                             <td class="cart_quantity">
                                 <div class="cart_quantity_button">
-                                    <a class="cart_quantity_up" asp-controller="Cart" asp-action="AddToCart" asp-route-id="@product.Id"> + </a>
+                                    <a class="cart_quantity_up" asp-controller="Cart" asp-action="AddToCart" asp-route-id="@product.Id" data-id="@product.Id"> + </a>
                                     <input class="cart_quantity_input" type="text" name="quantity" value="@quantity" autocomplete="off" size="2">
-                                    <a class="cart_quantity_down" asp-controller="Cart" asp-action="DecrementFromCart" asp-route-id="@product.Id"> - </a>
+                                    <a class="cart_quantity_down" asp-action="DecrementFromCart" asp-route-id="@product.Id" data-id="@product.Id"> - </a>
                                 </div>
                             </td>
                             <td class="cart_total">
-                                <p class="cart_total_price">@((quantity * product.Price).ToString("C"))</p>
+                                <p class="cart_total_price" data-price="@(quantity * product.Price)">@((quantity * product.Price).ToString("C"))</p>
                             </td>
                             <td class="cart_delete">
-                                <a class="cart_quantity_delete" asp-controller="Cart" asp-action="RemoveFromCart" asp-route-id="@product.Id"><i class="fa fa-times"></i></a>
+                                <a class="cart_quantity_delete" asp-action="RemoveFromCart" asp-route-id="@product.Id" data-id="@product.Id"><i class="fa fa-times"></i></a>
                             </td>
                         </tr>
                     }
@@ -67,10 +63,10 @@
     <div class="container">
         <div class="heading">
             <h3>Оформим заказ?</h3>
-            <p>Скидок нет (как и пива)...</p>
+            <p>Скидок нет...</p>
         </div>
         <div class="row">
-            <partial name="Partial/_CheckOut" model="@Model.OrderViewModel" view-data="@(new ViewDataDictionary(ViewData) { {"SumCart", SumCart } })"/>            
+            <partial name="Partial/_CheckOut" model="@Model.OrderViewModel" view-data="@(new ViewDataDictionary(ViewData) { { "SumCart", SumCart } })" />
         </div>
     </div>
 </section><!--/#do_action-->

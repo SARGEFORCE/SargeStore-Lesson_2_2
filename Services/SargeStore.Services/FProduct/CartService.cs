@@ -10,7 +10,8 @@ namespace SargeStore.Services.FProduct
     {
         private readonly IProductData _ProductData;
         private readonly ICartStore _CartStore;
-    
+
+        //Именно интерфейс!!!
         public CartService(IProductData ProductData, ICartStore CartStore)
         {
             _ProductData = ProductData;
