@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using SargeStore.Interfaces.Services;
 using SargeStoreDomain.ViewModels;
 
-namespace SargeStore.Components
+namespace SargeStore.ViewComponents
 {
     public class BrandsViewComponent : ViewComponent
     {
@@ -28,6 +28,5 @@ namespace SargeStore.Components
            })
            .OrderBy(brand => brand.Order)
            .ToList();
-
     }
 }

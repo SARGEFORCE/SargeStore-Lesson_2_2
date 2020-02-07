@@ -12,7 +12,7 @@ namespace SargeStore.Areas.Admin.Controllers
         public HomeController(IProductData ProductData) => _ProductData = ProductData;
         public IActionResult Index() => View();
 
-        public IActionResult ProductList() => View(_ProductData.GetProducts());
+        public IActionResult ProductList() => View(_ProductData.GetProducts().Products);
 
         public IActionResult Edit(int? id) => View();
         public IActionResult Delete(int id) => View();

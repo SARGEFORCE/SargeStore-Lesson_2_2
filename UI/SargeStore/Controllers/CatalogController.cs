@@ -5,27 +5,38 @@ using SargeStoreDomain.ViewModels;
 using SargeStore.Interfaces.Services;
 using log4net.Core;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Configuration;
 
 namespace SargeStore.Controllers
 {
     public class CatalogController : Controller
     {
         private readonly IProductData _ProductData;
-        public CatalogController(IProductData ProductData) => _ProductData = ProductData;
+        private readonly IConfiguration _Configuration;
 
-        public IActionResult Shop(int? SectionId, int? BrandId)
+        public CatalogController(IProductData ProductData, IConfiguration Configuration)
         {
+            _ProductData = ProductData;
+            _Configuration = Configuration;
+        }
+
+        public IActionResult Shop(int? SectionId, int? BrandId, int Page = 1)
+        {
+            var page_size = int.TryParse(_Configuration["PageSize"], out var size) ? size : (int?)null;
+
             var products = _ProductData.GetProducts(new ProductFilter
             {
                 SectionId = SectionId,
-                BrandId = BrandId
+                BrandId = BrandId,
+                Page = Page,
+                PageSize = page_size
             });
 
             return View(new CatalogViewModel
             {
                 SectionId = SectionId,
                 BrandId = BrandId,
-                Products = products.Select(p => new ProductViewModel
+                Products = products.Products.Select(p => new ProductViewModel
                 {
                     Id = p.Id,
                     Name = p.Name,
@@ -33,7 +44,13 @@ namespace SargeStore.Controllers
                     Price = p.Price,
                     ImageUrl = p.ImageUrl,
                     Brand = p.Brand?.Name
-                }).OrderBy(p => p.Order)
+                }).OrderBy(p => p.Order),
+                PageViewModel = new PageViewModel
+                {
+                    PageSize = page_size ?? 0,
+                    PageNumber = Page,
+                    TotalItems = products.TotalCount
+                }
             });
         }
 
@@ -43,7 +60,7 @@ namespace SargeStore.Controllers
 
             if (product is null)
             {
-                Logger.LogWarning("Запрошенный товар {0} не найден в каталоге", id);
+                Logger.LogWarning("Запрошенный товар {0} отсутствует в каталоге", id);
                 return NotFound();
             }
 

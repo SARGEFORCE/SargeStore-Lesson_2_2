@@ -10,7 +10,8 @@ namespace SargeStore.Services.FProduct
     {
         private readonly IProductData _ProductData;
         private readonly ICartStore _CartStore;
-    
+
+        //Именно интерфейс!!!
         public CartService(IProductData ProductData, ICartStore CartStore)
         {
             _ProductData = ProductData;
@@ -68,7 +69,7 @@ namespace SargeStore.Services.FProduct
                 Ids = _CartStore.Cart.Items.Select(item => item.ProductId).ToList()
             });
 
-            var products_view_models = products.Select(p => new ProductViewModel
+            var products_view_models = products.Products.Select(p => new ProductViewModel
             {
                 Id = p.Id,
                 Name = p.Name,
