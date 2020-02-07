@@ -6,6 +6,7 @@ using SargeStore.Interfaces.Services;
 using log4net.Core;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
+using System.Collections.Generic;
 
 namespace SargeStore.Controllers
 {
@@ -13,6 +14,7 @@ namespace SargeStore.Controllers
     {
         private readonly IProductData _ProductData;
         private readonly IConfiguration _Configuration;
+        private const string __PageSize = "PageSize";
 
         public CatalogController(IProductData ProductData, IConfiguration Configuration)
         {
@@ -76,5 +78,36 @@ namespace SargeStore.Controllers
                 Brand = product.Brand?.Name
             });
         }
+
+        #region API
+
+        public IActionResult GetFilteredItems(int? SectionId, int? BrandId, int Page)
+        {
+            var products = GetProducts(SectionId, BrandId, Page);
+            return PartialView("Partial/_FeaturesItem", products);
+        }
+
+        public IEnumerable<ProductViewModel> GetProducts(int? SectionId, int? BrandId, int Page)
+        {
+            var products_model = _ProductData.GetProducts(new ProductFilter
+            {
+                SectionId = SectionId,
+                BrandId = BrandId,
+                Page = Page,
+                PageSize = int.Parse(_Configuration[__PageSize])
+            });
+
+            return products_model.Products.Select(product => new ProductViewModel
+            {
+                Id = product.Id,
+                Name = product.Name,
+                Price = product.Price,
+                Order = product.Order,
+                Brand = product.Brand?.Name ?? string.Empty,
+                ImageUrl = product.ImageUrl
+            });
+        }
+
+        #endregion
     }
 }
