@@ -16,6 +16,7 @@ using SargeStore.Clients.Identity;
 using SargeStore.Logger;
 using Microsoft.Extensions.Logging;
 using SargeStore.Infrastructure.Middleware;
+using SargeStore.Hubs;
 
 namespace SargeStore
 {
@@ -27,6 +28,8 @@ namespace SargeStore
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSignalR();
+
             services.AddSingleton<IEmployeesData, EmployeesClient>();
             services.AddScoped<IProductData, ProductsClient>();
             services.AddScoped<IOrderService, OrdersClient>();
@@ -71,9 +74,7 @@ namespace SargeStore
 
             services.AddSession();
             services.AddMvc();
-
         }
-
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory log)
         {
@@ -84,13 +85,12 @@ namespace SargeStore
                 app.UseDeveloperExceptionPage();
                 app.UseBrowserLink();
             }
-
-            app.UseResponseCompression();
-
             //app.Run(async (context) =>
             //{
             //    await context.Response.WriteAsync("Hello World!");
             //});
+
+            //app.UseResponseCompression(); //не подружился с UseSignalR
 
             app.UseStaticFiles();
             app.UseDefaultFiles();
@@ -101,7 +101,10 @@ namespace SargeStore
             app.UseSession();
 
             app.UseMiddleware<ErrorHandlingMiddleware>();//промежуточное ПО для отлавливания и логгирования ошибок
-
+            app.UseSignalR(route =>
+            {
+                route.MapHub<InformationHub>("/info");
+            });
             app.UseMvc(routes => 
             {
                     routes.MapRoute(
