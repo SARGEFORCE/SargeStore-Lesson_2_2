@@ -338,6 +338,6 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
-/SargeStore/wwwroot/lib
+/UI/SargeStore/wwwroot/lib
 /Services/SargeStore.ServiceHosting/Logs
 /UI/SargeStore/Logs

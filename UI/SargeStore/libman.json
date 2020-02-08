@@ -51,6 +51,10 @@
       "files": [
         "jquery.validate.unobtrusive.min.js"
       ]
+    },
+    {
+      "library": "jquery-loading-overlay@2.1.6",
+      "destination": "wwwroot/lib/jquery-loading-overlay/"
     }
   ]
 }
